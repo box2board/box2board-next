@@ -1,0 +1,89 @@
+/*
+ * Global CSS for the Box2Board project. We embrace a mobile‑first
+ * dark theme with high contrast. Tables are styled with subtle
+ * borders and striped rows for readability on small screens. Feel
+ * free to adjust colours and spacing to taste; these values were
+ * chosen to work well in both light and dark environments.
+ */
+
+/* Basic resets */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background-color: #111827; /* gray-900 */
+  color: #f3f4f6; /* gray-100 */
+}
+
+/* Override default selection colour */
+::selection {
+  background-color: #2563eb; /* blue‑600 */
+  color: #ffffff;
+}
+
+/* Table styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th,
+td {
+  padding: 0.5rem;
+  text-align: left;
+}
+th {
+  background-color: #1f2937; /* gray‑800 */
+  color: #d1d5db; /* gray‑300 */
+  font-weight: 600;
+}
+tbody tr:nth-child(odd) {
+  background-color: #111827; /* gray‑900 */
+}
+tbody tr:nth-child(even) {
+  background-color: #1f2937; /* gray‑800 */
+}
+/* Heatmap classes for HR rate cells */
+.heat‑low {
+  background-color: #05445E; /* deep blue */
+}
+.heat‑medium {
+  background-color: #0077B6; /* blue */
+}
+.heat‑high {
+  background-color: #00A8E8; /* light blue */
+}
+.heat‑veryhigh {
+  background-color: #9CDDF2; /* pale blue */
+}
+
+/*
+ * Utility classes emulating a minimal subset of Tailwind CSS. These
+ * provide consistency across layout and components without pulling in
+ * the entire framework. You can extend this section as needed for
+ * additional spacing or typography utilities.
+ */
+.bg-gray-900 { background-color: #111827; }
+.bg-gray-800 { background-color: #1f2937; }
+.text-gray-100 { color: #f3f4f6; }
+.text-gray-300 { color: #d1d5db; }
+.font-bold { font-weight: 700; }
+.font-semibold { font-weight: 600; }
+.text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+.text-2xl { font-size: 1.5rem; line-height: 2rem; }
+.text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.space-y-8 > :not([hidden]) ~ :not([hidden]) { margin-top: 2rem; }
+.space-y-4 > :not([hidden]) ~ :not([hidden]) { margin-top: 1rem; }
+.overflow-x-auto { overflow-x: auto; }
+.max-w-md { max-width: 28rem; }
+.shadow-md { box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+.px-4 { padding-left: 1rem; padding-right: 1rem; }
+.py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+.container { max-width: 1024px; margin-left: auto; margin-right: auto; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+.flex { display: flex; }
+.items-center { align-items: center; }
+.space-x-6 > :not([hidden]) ~ :not([hidden]) { margin-left: 1.5rem; }
+.min-h-screen { min-height: 100vh; }
+.hover\:text-blue-400:hover { color: #60a5fa; }
