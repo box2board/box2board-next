@@ -1,16 +1,1 @@
-{
-  "cron": [
-    {
-      "path": "/api/cron/daily",
-      "schedule": "0 9 * * *"
-    },
-    {
-      "path": "/api/cron/daily",
-      "schedule": "0 15 * * *"
-    },
-    {
-      "path": "/api/cron/hourly",
-      "schedule": "0 * * * *"
-    }
-  ]
-}
+{}
