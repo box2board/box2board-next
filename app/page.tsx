@@ -1,19 +1,25 @@
-/**
- * The home page of Box2Board. This page serves as a simple introduction
- * to the project and guides users towards one of the sport‑specific
- * dashboards. As more sports are added you can update this
- * description to reflect available features.
- */
+import LeagueTabs from '@/components/LeagueTabs';
+
 export default function Home() {
   return (
-    <section className="space-y-4">
-      <h1 className="text-3xl font-bold mb-2">Welcome to Box2Board</h1>
-      <p>
-        Box2Board provides lightweight betting insights across MLB, NFL and
-        NBA. Data is refreshed automatically throughout the day via Vercel
-        Cron and cached in Vercel KV. Click on one of the sports above to
-        explore today’s matchups, trends and odds.
-      </p>
+    <section className="space-y-6">
+      <div className="space-y-3">
+        <p className="text-sm text-gray-300 uppercase tracking-wide">
+          Box2Board Platform
+        </p>
+        <h1 className="text-3xl font-bold">Box2Board</h1>
+        <p className="text-gray-300 max-w-md">
+          Daily sports insights across MLB, NBA, NFL, NHL, and Golf. Built for
+          context and momentum, never picks.
+        </p>
+      </div>
+      <div className="flex items-center gap-3">
+        <span className="status-badge">Status: Online</span>
+        <a className="link" href="/health">
+          View health check
+        </a>
+      </div>
+      <LeagueTabs />
     </section>
   );
 }

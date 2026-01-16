@@ -3,10 +3,10 @@ import LeagueDashboard from '@/components/LeagueDashboard';
 import { leagueDescriptions } from '@/lib/leagues';
 
 export const metadata: Metadata = {
-  title: 'MLB',
-  description: leagueDescriptions.mlb,
+  title: 'Golf',
+  description: leagueDescriptions.golf,
 };
 
-export default function MlbPage() {
-  return <LeagueDashboard league="mlb" />;
+export default function GolfPage() {
+  return <LeagueDashboard league="golf" />;
 }
