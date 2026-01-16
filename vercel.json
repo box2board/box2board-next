@@ -4,10 +4,5 @@
       "path": "/api/cron/daily",
       "schedule": "0 9 * * *"
     }
-  ],
-  "functions": {
-    "app/api/**/route.ts": {
-      "runtime": "nodejs"
-    }
-  }
+  ]
 }
