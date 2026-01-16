@@ -3,10 +3,6 @@
     {
       "path": "/api/cron/daily",
       "schedule": "0 9 * * *"
-    },
-    {
-      "path": "/api/cron/hourly",
-      "schedule": "0 * * * *"
     }
   ],
   "functions": {
