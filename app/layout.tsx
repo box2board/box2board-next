@@ -24,9 +24,9 @@ export default function RootLayout({
         <header className="bg-gray-800 text-gray-100 px-4 py-3 shadow-md">
           <nav className="container mx-auto flex items-center space-x-6">
             <Link href="/" className="font-bold text-lg">Box2Board</Link>
-            <Link href="/mlb" className="hover:text-blue-400">MLB</Link>
-            <Link href="/nfl" className="hover:text-blue-400">NFL</Link>
-            <Link href="/nba" className="hover:text-blue-400">NBA</Link>
+            <span className="text-gray-300">MLB</span>
+            <span className="text-gray-300">NFL</span>
+            <span className="text-gray-300">NBA</span>
           </nav>
         </header>
         <main className="container mx-auto px-4 py-6">
