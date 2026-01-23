@@ -1,0 +1,136 @@
+import type { LeagueKey, MarketLine } from "../types";
+
+export const linesByLeague: Record<LeagueKey, MarketLine[]> = {
+  mlb: [
+    {
+      gameId: "mlb-1",
+      matchup: "Dodgers @ Padres",
+      moneyline: "LAD -135 / SD +120",
+      spread: "LAD -1.5 (+140)",
+      total: "7.5 (o -110 / u -110)",
+      movement: "Total up 0.5 runs",
+    },
+    {
+      gameId: "mlb-2",
+      matchup: "Yankees @ Red Sox",
+      moneyline: "NYY -118 / BOS +105",
+      spread: "BOS +1.5 (-165)",
+      total: "8.5 (o -105 / u -115)",
+      movement: "MLB market steady",
+    },
+    {
+      gameId: "mlb-3",
+      matchup: "Cubs @ Cardinals",
+      moneyline: "CHC +110 / STL -125",
+      spread: "STL -1.5 (+155)",
+      total: "9.0 (o -112 / u -108)",
+      movement: "Sharp lean to under",
+    },
+  ],
+  nba: [
+    {
+      gameId: "nba-1",
+      matchup: "Warriors @ Lakers",
+      moneyline: "GSW +135 / LAL -150",
+      spread: "LAL -3.5 (-110)",
+      total: "232.5 (o -108 / u -112)",
+      movement: "Spread moved 1.0 point",
+    },
+    {
+      gameId: "nba-2",
+      matchup: "Celtics @ Heat",
+      moneyline: "BOS -122 / MIA +108",
+      spread: "BOS -2.0 (-115)",
+      total: "221.0 (o -105 / u -115)",
+      movement: "Totals trending down",
+    },
+    {
+      gameId: "nba-3",
+      matchup: "Nuggets @ Suns",
+      moneyline: "DEN -105 / PHX -105",
+      spread: "PK",
+      total: "228.0 (o -110 / u -110)",
+      movement: "Balanced action",
+    },
+  ],
+  nfl: [
+    {
+      gameId: "nfl-1",
+      matchup: "Chiefs @ Bills",
+      moneyline: "KC +110 / BUF -125",
+      spread: "BUF -2.5 (-110)",
+      total: "48.5 (o -112 / u -108)",
+      movement: "Total up 1.0",
+    },
+    {
+      gameId: "nfl-2",
+      matchup: "Eagles @ Cowboys",
+      moneyline: "PHI -118 / DAL +102",
+      spread: "PHI -1.5 (-110)",
+      total: "46.0 (o -110 / u -110)",
+      movement: "Early dog support",
+    },
+    {
+      gameId: "nfl-3",
+      matchup: "Ravens @ Steelers",
+      moneyline: "BAL -145 / PIT +125",
+      spread: "BAL -3.0 (-115)",
+      total: "41.5 (o -105 / u -115)",
+      movement: "Totals drifting lower",
+    },
+  ],
+  nhl: [
+    {
+      gameId: "nhl-1",
+      matchup: "Rangers @ Maple Leafs",
+      moneyline: "NYR +105 / TOR -120",
+      spread: "TOR -1.5 (+170)",
+      total: "6.5 (o -115 / u -105)",
+      movement: "Juice on over",
+    },
+    {
+      gameId: "nhl-2",
+      matchup: "Oilers @ Canucks",
+      moneyline: "EDM -130 / VAN +115",
+      spread: "EDM -1.5 (+155)",
+      total: "6.0 (o -110 / u -110)",
+      movement: "Market leaning over",
+    },
+    {
+      gameId: "nhl-3",
+      matchup: "Bruins @ Devils",
+      moneyline: "BOS -118 / NJD +104",
+      spread: "BOS -1.5 (+165)",
+      total: "5.5 (o -108 / u -112)",
+      movement: "Steady action",
+    },
+  ],
+  golf: [
+    {
+      gameId: "golf-1",
+      matchup: "Rahm vs McIlroy",
+      moneyline: "Rahm -112 / Rory -108",
+      spread: "Stroke H2H",
+      total: "n/a",
+      movement: "Matchup leaning Rahm",
+    },
+    {
+      gameId: "golf-2",
+      matchup: "Scheffler vs Koepka",
+      moneyline: "Scottie -125 / Brooks +110",
+      spread: "Stroke H2H",
+      total: "n/a",
+      movement: "Steady prices",
+    },
+    {
+      gameId: "golf-3",
+      matchup: "Homa vs Matsuyama",
+      moneyline: "Homa +102 / Hideki -118",
+      spread: "Stroke H2H",
+      total: "n/a",
+      movement: "Minor drift",
+    },
+  ],
+};
+
+export const getLeagueLines = (league: LeagueKey) => linesByLeague[league];
