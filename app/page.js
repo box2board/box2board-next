@@ -5,6 +5,7 @@ export default function HomePage() {
   return (
     <div className="page-shell">
       <section className="hero">
+        <p className="eyebrow">Daily MLB Signal Board</p>
         <h1>Today’s MLB Board. Built to scan in seconds.</h1>
         <p>
           Player signals, hot games, and avoid spots—ranked daily and
