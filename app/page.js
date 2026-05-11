@@ -12,12 +12,12 @@ export default function HomePage() {
           simplified.
         </p>
         <div className="hero-actions">
-          <button className="btn btn-primary">View Today’s Board</button>
-          <button className="btn btn-secondary">Join for $10/month</button>
+          <button className="btn btn-primary">Join for $10/month</button>
+          <button className="btn btn-secondary">View Today’s Board</button>
         </div>
       </section>
 
-      <section>
+      <section className="product-preview">
         <SignalBoard />
       </section>
 
