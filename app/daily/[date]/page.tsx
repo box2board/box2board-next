@@ -46,6 +46,7 @@ export default async function DailyBriefingPage({ params }: { params: Promise<{ 
             <h3>{story.title}</h3>
             <p>{story.summary}</p>
             {story.whyItMatters && <p><strong>Why it matters:</strong> {story.whyItMatters}</p>}
+            {story.sourceUrl && <a className="textLink" href={story.sourceUrl} target="_blank" rel="noopener noreferrer">Source: {story.sourceLabel ?? "Read source"} →</a>}
           </article>)}
         </div>
       </section>
