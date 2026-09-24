@@ -1,17 +1,5 @@
 import type { MetadataRoute } from "next";
-import { leagues } from "@/lib/leagues";
-
-export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://box2board.vercel.app";
-  const leagueRoutes = leagues.flatMap((league) => [
-    league.path,
-    `${league.path}/lines`,
-    `${league.path}/game-props`,
-    `${league.path}/player-props`,
-  ]);
-
-  return ["/", ...leagueRoutes].map((route) => ({
-    url: `${baseUrl}${route}`,
-    lastModified: new Date(),
-  }));
-}
+import { publicLeagues } from "@/lib/leagues";
+import { PRODUCTION_URL } from "@/lib/site";
+const baseUrl = PRODUCTION_URL;
+export default function sitemap(): MetadataRoute.Sitemap { return ["/", "/about", ...publicLeagues.map((league) => league.path)].map((route) => ({ url: `${baseUrl}${route}`, changeFrequency: route === "/about" ? "monthly" : "hourly", priority: route === "/" ? 1 : .8 })); }
