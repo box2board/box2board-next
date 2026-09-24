@@ -5,7 +5,8 @@
   "scripts": {
     "build": "next build",
     "start": "next start",
-    "dev": "next dev"
+    "dev": "next dev",
+    "test": "node scripts/test-sports.js"
   },
   "dependencies": {
     "next": "14.1.0",

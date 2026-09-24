@@ -1,43 +1,21 @@
-# Box2Board Next.js Foundation
+# Box2Board
 
-This repository contains the stabilized Next.js foundation for Box2Board.
-It uses the **App Router** and ships with a minimal landing page, health
-endpoint, and health UI so deployments can be validated quickly.
+Box2Board is a focused, server-rendered daily scoreboard for MLB, NBA, NFL, and NHL. Schedule days and game times use America/New_York, with daylight-saving time handled by the runtime.
 
-## Getting Started
-
-Install dependencies:
+## Local development
 
 ```bash
 npm install
-```
-
-Run the development server:
-
-```bash
 npm run dev
 ```
 
-Build for production:
+Open `http://localhost:3000`. The app requests scoreboard data on the server and shows an explicit error state when the provider cannot be reached.
+
+## Production
 
 ```bash
 npm run build
-```
-
-Start the production server:
-
-```bash
 npm run start
 ```
 
-## Vercel Deployment
-
-This project is ready for Vercel. Import the repository and use the default
-Next.js build settings:
-
-- Build command: `npm run build`
-- Output: `.next`
-- Install command: `npm install`
-
-No required environment variables are needed to boot. Optional runtime
-metadata is read from `VERCEL_GIT_COMMIT_SHA` when available.
+Vercel is the configured hosting provider. The canonical production origin is `https://box2board.com`; previews are protected from indexing. No custom environment variables are currently required. See [Instructions.md](./Instructions.md) for architecture and deployment guidance, [LAUNCH_CHECKLIST.md](./LAUNCH_CHECKLIST.md) for verification, and [NEXT_PHASE.md](./NEXT_PHASE.md) for the prioritized product roadmap.
