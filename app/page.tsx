@@ -30,6 +30,11 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <section className="dailyPromo" aria-label="Daily Sports Desk">
+        <div><p className="kicker">Morning briefing</p><h2>Daily Sports Desk</h2><p>Catch up on verified results from yesterday and scan what’s ahead today.</p></div>
+        <Link className="actionLink" href="/daily">Read today’s desk →</Link>
+      </section>
+
       <section className="scoreSection" aria-labelledby="scores-heading">
         <div className="sectionHeading">
           <div><p className="kicker">Today’s board</p><h2 id="scores-heading">Games & scores</h2></div>
