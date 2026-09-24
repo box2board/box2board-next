@@ -39,7 +39,7 @@ No sports API key, Vercel KV database, or cron job is required by the current sc
 4. Deploy the branch to Preview first. Preview and development responses must include `X-Robots-Tag: noindex, nofollow, noarchive`, and preview `robots.txt` must disallow crawling.
 5. Follow `LAUNCH_CHECKLIST.md` before promoting the already-built artifact. Do not deploy to Production or alter DNS without explicit authorization.
 
-`VERCEL_ENV` is supplied by Vercel and is used to distinguish production from previews. No user-supplied environment variables are currently required.
+`VERCEL_ENV` is supplied by Vercel and is used to distinguish production from previews. No user-supplied environment variables are required for the scoreboard. Optional MLB matchup insights require the server-side configuration described in `MATCHUP_INSIGHTS.md`.
 
 ## Retired prototype configuration — preserved for migration context
 
