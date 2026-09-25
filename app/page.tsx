@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { matchupsEnabled } from "@/lib/matchup-provider";
 import ScoreCard from "@/components/ScoreCard";
 import { getScoreboards, scheduleDateKey, SCHEDULE_TIME_ZONE } from "@/lib/sports";
 
@@ -42,6 +43,7 @@ export default async function HomePage() {
         )}
       </section>
 
+      {matchupsEnabled() && <p className="insightsLink"><Link className="actionLink" href="/mlb/insights">Go beyond the score: explore MLB matchup insights →</Link></p>}
       <section className="dashboardGrid" aria-label="Daily overview">
         <article className="panel pulsePanel">
           <p className="kicker">At a glance</p><h2>Today in numbers</h2>
