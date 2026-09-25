@@ -6,10 +6,11 @@ const retiredRoutes: Record<string, string> = {
   "player-props": "Player props are not published because Box2Board does not have a verified live props source.",
 };
 
-export function GET(
+export async function GET(
   _request: Request,
-  { params }: { params: { league: string; retired: string } },
+  props: { params: Promise<{ league: string; retired: string }> }
 ) {
+  const params = await props.params;
   if (!isPublicLeague(params.league) || !retiredRoutes[params.retired]) {
     return new Response("Not found", { status: 404 });
   }

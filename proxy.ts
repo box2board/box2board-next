@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const response = NextResponse.next();
   if (process.env.VERCEL_ENV !== "production") {
     response.headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");

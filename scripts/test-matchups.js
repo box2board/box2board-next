@@ -67,7 +67,7 @@ assert.equal(teamForm(six,target,1).results.length,5);
     return require(id);
   };
   view._compile(ts.transpileModule(fs.readFileSync('app/(leagues)/[league]/insights/page.tsx','utf8'),{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.CommonJS,jsx:ts.JsxEmit.ReactJSX}}).outputText,'insights-view.js');
-  const render = async()=>renderToStaticMarkup(await view.exports.default({params:{league:'mlb'}}));
+  const render = async()=>renderToStaticMarkup(await view.exports.default({params:Promise.resolve({league:'mlb'})}));
   const html = await render();
   assert.ok(html.includes('See included results')); assert.ok(html.includes('Runs scored / game'));
   assert.ok(!html.includes('test-key'));

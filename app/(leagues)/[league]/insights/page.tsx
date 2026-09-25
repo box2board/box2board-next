@@ -18,9 +18,10 @@ function Form({ team, form }: {team:ContextTeam; form:TeamForm}) {
     </>}
   </section>;
 }
-export default async function Insights({ params }: {params:{league:string}}) {
+export default async function Insights(props: {params: Promise<{league:string}>}) {
+  const params = await props.params;
   if (params.league!=="mlb" || !matchupsEnabled()) notFound();
-  const day = scheduleDateKey(); const snapshot = await getMatchupSnapshot();
+  const day = scheduleDateKey();const snapshot = await getMatchupSnapshot();
   const games = snapshot.games.filter(g=>g.day===day && ["scheduled","in_progress","final","delayed"].includes(g.state)).sort((a,b)=>a.date.localeCompare(b.date) || a.id-b.id);
   const stale = Boolean(snapshot.checkedAt && Date.now()-Date.parse(snapshot.checkedAt)>20*60*1000);
   return <div className="container leaguePage">

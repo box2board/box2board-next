@@ -4,6 +4,8 @@ Box2Board is a focused, server-rendered daily scoreboard for MLB, NBA, NFL, and 
 
 ## Local development
 
+Use Node.js 22 or newer. The application uses Next.js 16.3.6 and React 19.3.0.
+
 ```bash
 npm install
 npm run dev

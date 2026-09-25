@@ -6,9 +6,13 @@ import { getScoreboard, scheduleDateKey, shiftDateKey, SCHEDULE_TIME_ZONE, valid
 import { getLeagueConfig, isPublicLeague } from "@/lib/leagues";
 
 export const revalidate = 60;
-export default async function LeaguePage({ params, searchParams }: { params: { league: string }; searchParams: { date?: string } }) {
+export default async function LeaguePage(
+  props: { params: Promise<{ league: string }>; searchParams: Promise<{ date?: string }> }
+) {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
   if (!isPublicLeague(params.league)) notFound();
-  const config = getLeagueConfig(params.league)!; const date = validDateKey(searchParams.date); const board = await getScoreboard(params.league, date); const today = scheduleDateKey();
+  const config = getLeagueConfig(params.league)!;const date = validDateKey(searchParams.date);const board = await getScoreboard(params.league, date);const today = scheduleDateKey();
   const dateLabel = new Intl.DateTimeFormat("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric", timeZone: "UTC" }).format(new Date(`${date.slice(0,4)}-${date.slice(4,6)}-${date.slice(6)}T12:00:00Z`));
   return <div className="container leaguePage">
     <section className="leagueHero"><div><p className="kicker">{config.label} desk</p><h1>{config.label} scores & schedule</h1><p>Game times, live status, and final scores. Schedule days use Eastern Time.</p></div><span className={`leagueMonogram ${params.league}`} aria-hidden="true">{config.label}</span></section>

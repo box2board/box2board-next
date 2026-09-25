@@ -21,4 +21,14 @@ The window is cached for 15 minutes per Eastern day, including failures. Each re
 
 `npm test` covers date boundaries, home/away scoring, zero scores, incomplete results, deduplication, doubleheaders, sample limits, season type filtering, pagination and provider failures. `npm run build` validates production compilation and types. Fixtures exist only in the test script. Server-rendered success, empty, unavailable and disabled states are also tested. Browser automation could not start in this workspace (daemon exited); visual viewport verification remains a preview release gate.
 
-Before promotion: inspect 360px, 768px and 1440px layouts; expand included results using keyboard/touch; test success, empty and provider-error states. Confirm no credential in HTML or browser requests. Live provider validation is outstanding until the owner configures their key. The existing Next.js 14.1.0 dependency emitted a security deprecation warning during installation; assess and update it separately before promoting new functionality.
+Before promotion: inspect 360px, 768px and 1440px layouts; expand included results using keyboard/touch; test success, empty and provider-error states. Confirm no credential in HTML or browser requests.
+
+## Verification update — September 25, 2026
+
+The owner enabled the feature in Preview and supplied phone screenshots showing results and working expanders. The ten displayed STL/PIT team-result rows from September 18–23 were independently checked against MLB's official schedule feed. Both samples match: STL 2–3, 3.2 runs scored/game and 4.6 allowed; PIT 4–1, 4.2 scored and 3.6 allowed. This verifies the screenshot sample, not every matchup.
+
+The framework was migrated incrementally through Next.js 15.5.26 to 16.3.6 with React 19.3.0. Async route parameters and the proxy convention were migrated with official codemods. Real Node/React type packages replace the minimal vendored type dependencies. Existing provider caching, feature gating and server-only credential handling remain unchanged.
+
+`npm test`, the Next.js 16 production build, and local production HTTP smoke checks pass. `npm audit` reports zero known vulnerabilities across production and development dependencies at this check; this is not a guarantee against undiscovered issues. Run `EXPECT_PREVIEW=true node scripts/smoke-routes.js <preview-origin>` for route checks against an accessible preview. No credentials should be supplied to that script.
+
+Automated viewport verification remains blocked: agent-browser's Chrome installer failed certificate validation, and Playwright's browser download returned an invalid archive. Do not mark the 360/768/1440px release gate complete from HTTP checks alone. Next steps are the updated hosted Preview build, visual/console checks, and explicit authorization before Production activation. No Production settings or DNS have been changed.
