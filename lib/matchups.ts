@@ -44,3 +44,187 @@ export function teamForm(games: ContextGame[], target: ContextGame, teamId: numb
   return { results, wins:results.filter(r=>r.result === "W").length, losses:results.filter(r=>r.result === "L").length, scored:results.length ? results.reduce((n,r)=>n+r.scored,0)/results.length : null, allowed:results.length ? results.reduce((n,r)=>n+r.allowed,0)/results.length : null, missingScores:false };
 }
 export function displayDay(day: string) { return `${day.slice(4,6)}/${day.slice(6,8)}`; }
+
+
+export interface MlbIntelligenceSignal {
+  id: "form" | "prevention" | "scoring";
+  eyebrow: string;
+  headline: string;
+  detail: string;
+}
+
+type TeamPulse = { team: ContextTeam; form: TeamForm };
+type MatchupPulse = { game: ContextGame; away: TeamForm; home: TeamForm; combinedScoring: number };
+
+function hasUsefulForm(form: TeamForm) {
+  return !form.missingScores && form.results.length >= 3 && form.scored !== null && form.allowed !== null;
+}
+
+/**
+ * Builds a small, descriptive intelligence layer from the same verified recent-form
+ * data used by the MLB matchup page. Signals are deterministic and never presented
+ * as predictions.
+ */
+export function buildMlbDailyIntelligence(games: ContextGame[], day: string): MlbIntelligenceSignal[] {
+  const targets = [...new Map(
+    games
+      .filter(g => g.day === day && ["scheduled", "in_progress", "final", "delayed"].includes(g.state))
+      .map(g => [g.id, g]),
+  ).values()].sort((a, b) => a.date.localeCompare(b.date) || a.id - b.id);
+
+  const teamsById = new Map<number, TeamPulse>();
+  const matchups: MatchupPulse[] = [];
+
+  for (const game of targets) {
+    const away = teamForm(games, game, game.away.id);
+    const home = teamForm(games, game, game.home.id);
+
+    if (hasUsefulForm(away)) teamsById.set(game.away.id, { team: game.away, form: away });
+    if (hasUsefulForm(home)) teamsById.set(game.home.id, { team: game.home, form: home });
+
+    if (hasUsefulForm(away) && hasUsefulForm(home)) {
+      matchups.push({
+        game,
+        away,
+        home,
+        combinedScoring: away.scored! + home.scored!,
+      });
+    }
+  }
+
+  const teams = [...teamsById.values()];
+  if (!teams.length) return [];
+
+  const winRate = (row: TeamPulse) => row.form.wins / row.form.results.length;
+  const runDiff = (row: TeamPulse) => row.form.scored! - row.form.allowed!;
+  const signals: MlbIntelligenceSignal[] = [];
+
+  const formLeader = [...teams].sort((a, b) =>
+    winRate(b) - winRate(a) ||
+    runDiff(b) - runDiff(a) ||
+    b.form.results.length - a.form.results.length ||
+    a.team.abbreviation.localeCompare(b.team.abbreviation)
+  )[0];
+
+  signals.push({
+    id: "form",
+    eyebrow: "Form leader",
+    headline: `${formLeader.team.abbreviation} ${formLeader.form.wins}–${formLeader.form.losses} in recent form`,
+    detail: `${formLeader.form.scored!.toFixed(1)} runs scored and ${formLeader.form.allowed!.toFixed(1)} allowed per game across ${formLeader.form.results.length} completed games.`,
+  });
+
+  const preventionLeader = [...teams].sort((a, b) =>
+    a.form.allowed! - b.form.allowed! ||
+    runDiff(b) - runDiff(a) ||
+    b.form.results.length - a.form.results.length ||
+    a.team.abbreviation.localeCompare(b.team.abbreviation)
+  )[0];
+
+  signals.push({
+    id: "prevention",
+    eyebrow: "Run prevention",
+    headline: `${preventionLeader.team.abbreviation} allowing ${preventionLeader.form.allowed!.toFixed(1)} runs/game`,
+    detail: `Lowest recent runs-allowed average among teams on today’s board, across ${preventionLeader.form.results.length} completed games.`,
+  });
+
+  const scoringWatch = [...matchups].sort((a, b) =>
+    b.combinedScoring - a.combinedScoring ||
+    a.game.date.localeCompare(b.game.date) ||
+    a.game.id - b.game.id
+  )[0];
+
+  if (scoringWatch) {
+    signals.push({
+      id: "scoring",
+      eyebrow: "Scoring watch",
+      headline: `${scoringWatch.game.away.abbreviation} at ${scoringWatch.game.home.abbreviation}: ${scoringWatch.combinedScoring.toFixed(1)} combined recent runs/game`,
+      detail: `Based on each offense’s recent scoring average (${scoringWatch.away.results.length} and ${scoringWatch.home.results.length} completed games). Context only—not a forecast.`,
+    });
+  }
+
+  return signals;
+}
+
+
+export interface MlbTeamTrend {
+  team: ContextTeam;
+  games: number;
+  wins: number;
+  losses: number;
+  winRate: number;
+  scored: number;
+  allowed: number;
+  runDifferential: number;
+}
+
+export interface MlbMatchupTrend {
+  game: ContextGame;
+  away: MlbTeamTrend;
+  home: MlbTeamTrend;
+  combinedScoring: number;
+}
+
+export interface MlbTrendBoard {
+  teams: MlbTeamTrend[];
+  matchups: MlbMatchupTrend[];
+}
+
+function trendFromForm(team: ContextTeam, form: TeamForm): MlbTeamTrend | null {
+  if (!hasUsefulForm(form)) return null;
+  return {
+    team,
+    games: form.results.length,
+    wins: form.wins,
+    losses: form.losses,
+    winRate: form.wins / form.results.length,
+    scored: form.scored!,
+    allowed: form.allowed!,
+    runDifferential: form.scored! - form.allowed!,
+  };
+}
+
+/**
+ * Builds the MLB trend board from teams playing on the requested day.
+ * All rows use the same previous-seven-day window and require at least
+ * three completed games so small one- or two-game samples are withheld.
+ */
+export function buildMlbTrendBoard(games: ContextGame[], day: string): MlbTrendBoard {
+  const targets = [...new Map(
+    games
+      .filter(g => g.day === day && ["scheduled", "in_progress", "final", "delayed"].includes(g.state))
+      .map(g => [g.id, g]),
+  ).values()].sort((a,b) => a.date.localeCompare(b.date) || a.id-b.id);
+
+  const teamsById = new Map<number, MlbTeamTrend>();
+  const matchups: MlbMatchupTrend[] = [];
+
+  for (const game of targets) {
+    const away = trendFromForm(game.away, teamForm(games, game, game.away.id));
+    const home = trendFromForm(game.home, teamForm(games, game, game.home.id));
+    if (away) teamsById.set(away.team.id, away);
+    if (home) teamsById.set(home.team.id, home);
+    if (away && home) {
+      matchups.push({
+        game,
+        away,
+        home,
+        combinedScoring: away.scored + home.scored,
+      });
+    }
+  }
+
+  const teams = [...teamsById.values()].sort((a,b) =>
+    b.winRate-a.winRate ||
+    b.runDifferential-a.runDifferential ||
+    b.games-a.games ||
+    a.team.abbreviation.localeCompare(b.team.abbreviation)
+  );
+
+  matchups.sort((a,b) =>
+    b.combinedScoring-a.combinedScoring ||
+    a.game.date.localeCompare(b.game.date) ||
+    a.game.id-b.game.id
+  );
+
+  return { teams, matchups };
+}
