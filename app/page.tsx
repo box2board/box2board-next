@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { matchupsEnabled } from "@/lib/matchup-provider";
+import { getDailyIntelligence } from "@/lib/daily-intelligence";
+import DailyIntelligence from "@/components/DailyIntelligence";
 import ScoreCard from "@/components/ScoreCard";
 import { getScoreboards, scheduleDateKey, SCHEDULE_TIME_ZONE } from "@/lib/sports";
 
@@ -7,7 +8,10 @@ export const revalidate = 60;
 
 export default async function HomePage() {
   const date = scheduleDateKey();
-  const boards = await getScoreboards(date);
+  const [boards, intelligence] = await Promise.all([
+    getScoreboards(date),
+    getDailyIntelligence(date),
+  ]);
   const games = boards.flatMap((board) => board.games).sort((a, b) => a.startTime.localeCompare(b.startTime));
   const live = games.filter((game) => game.state === "in");
   const final = games.filter((game) => game.state === "post");
@@ -22,7 +26,7 @@ export default async function HomePage() {
         <div>
           <p className="kicker">The daily sports desk</p>
           <h1 id="today-heading">Know what’s on. Know what matters.</h1>
-          <p className="introCopy">Live scores and today’s schedule across MLB, NBA, NFL, and NHL—organized for a quick, reliable scan.</p>
+          <p className="introCopy">Today’s games, scores, and data-backed context across MLB, NBA, NFL, and NHL—organized for a quick, reliable scan.</p>
         </div>
         <div className="dateBlock">
           <span>Today</span>
@@ -30,6 +34,8 @@ export default async function HomePage() {
           <small>Schedule day and times use Eastern Time</small>
         </div>
       </section>
+
+      <DailyIntelligence items={intelligence.items} />
 
       <section className="scoreSection" aria-labelledby="scores-heading">
         <div className="sectionHeading">
@@ -43,7 +49,6 @@ export default async function HomePage() {
         )}
       </section>
 
-      {matchupsEnabled() && <p className="insightsLink"><Link className="actionLink" href="/mlb/insights">Go beyond the score: explore MLB matchup insights →</Link></p>}
       <section className="dashboardGrid" aria-label="Daily overview">
         <article className="panel pulsePanel">
           <p className="kicker">At a glance</p><h2>Today in numbers</h2>
