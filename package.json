@@ -9,7 +9,7 @@
     "build": "next build",
     "start": "next start",
     "dev": "next dev",
-    "test": "node scripts/test-sports.js && node scripts/test-matchups.js"
+    "test": "node scripts/test-sports.js && node scripts/test-matchups.js && node scripts/test-nfl-context.js && node scripts/test-intelligence.js"
   },
   "dependencies": {
     "next": "16.3.6",
