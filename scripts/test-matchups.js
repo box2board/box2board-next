@@ -38,7 +38,8 @@ assert.ok(intelligence.some(signal=>signal.id==='scoring'));
 assert.deepEqual(buildMlbDailyIntelligence([],target.day),[]);
 const trendBoard = buildMlbTrendBoard([...games,target], target.day);
 assert.equal(trendBoard.teams.length,2);
-assert.equal(trendBoard.matchups.length,1);
+// Both same-day games belong on the board; their results stay out of recent form.
+assert.deepEqual(trendBoard.matchups.map(row=>row.game.id).sort((a,b)=>a-b),[4,99]);
 assert.ok(trendBoard.teams[0].games >= 3);
 assert.equal(buildMlbTrendBoard([],target.day).teams.length,0);
 const incomplete = parseContextPage(page([raw(8,'2026-09-22T23:00:00Z',null,1)])).games;
